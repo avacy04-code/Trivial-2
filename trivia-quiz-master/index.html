@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trivia</title>
+  <style>
+    :root{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.65);
+      --line: rgba(255,255,255,.14);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --ok: #22c55e;
+      --bad:#ef4444;
+      --accent:#60a5fa;
+      --accent2:#a78bfa;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(96,165,250,.25), transparent 60%),
+        radial-gradient(900px 600px at 85% 20%, rgba(167,139,250,.20), transparent 55%),
+        radial-gradient(800px 500px at 50% 90%, rgba(34,197,94,.12), transparent 60%),
+        var(--bg);
+      padding: 28px 16px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .app{
+      width: min(980px, 100%);
+      display:grid;
+      gap: 14px;
+    }
+
+    /* Header */
+    .header{
+      display:flex;
+      align-items:stretch;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex; flex-direction:column; gap: 4px;
+      min-width: 220px;
+    }
+    .brand h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing: .2px;
+      display:flex; gap:10px; align-items:center;
+    }
+    .pill{
+      font-size: 12px;
+      color: rgba(255,255,255,.78);
+      border: 1px solid var(--line);
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      width: fit-content;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stats{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+
+    .stat{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      border-radius: 14px;
+      padding: 10px 12px;
+      min-width: 150px;
+    }
+    .stat .label{ font-size: 12px; color: var(--muted); }
+    .stat .value{
+      margin-top: 4px;
+      font-weight: 700;
+      font-size: 16px;
+      display:flex; align-items:baseline; gap: 8px;
+    }
+    .stat .value small{ color: var(--muted); font-weight: 600; }
+
+    /* Progress */
+    .progressWrap{
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+      height: 10px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .progressBar{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width .35s ease;
+    }
+
+    /* Main card */
+    .card{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.035));
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .meta{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .chip{
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
+      color: rgba(255,255,255,.80);
+    }
+    .chip b{
+      color: rgba(255,255,255,.92);
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    #q{
+      margin: 10px 0 14px;
+      font-size: clamp(18px, 2.2vw, 24px);
+      line-height: 1.25;
+      letter-spacing: .1px;
+    }
+
+    /* Answers */
+    #answers{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button.answer{
+      appearance:none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      text-align:left;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      box-shadow: 0 1px 0 rgba(255,255,255,.05);
+    }
+    button.answer:hover{ background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.20); }
+    button.answer:active{ transform: translateY(1px); }
+    button.answer:disabled{ opacity: .75; cursor:not-allowed; }
+
+    .badge{
+      flex: 0 0 auto;
+      width: 28px; height: 28px;
+      border-radius: 10px;
+      display:grid;
+      place-items:center;
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(255,255,255,.9);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    /* Correct/Incorrect states (mantiene tus clases ok/bad) */
+    .ok{
+      border-color: color-mix(in oklab, var(--ok) 65%, white 0%);
+      background: color-mix(in oklab, var(--ok) 20%, transparent);
+    }
+    .bad{
+      border-color: color-mix(in oklab, var(--bad) 65%, white 0%);
+      background: color-mix(in oklab, var(--bad) 18%, transparent);
+    }
+
+    /* Footer actions */
+    .actions{
+      display:flex;
+      gap: 10px;
+      margin-top: 14px;
+      justify-content:flex-end;
+    }
+
+    #next{
+      display:none;
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(90deg, rgba(96,165,250,.95), rgba(167,139,250,.95));
+      color: rgba(0,0,0,.88);
+      font-weight: 800;
+      padding: 12px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      min-width: 180px;
+      transition: filter .2s ease, transform .06s ease;
+      box-shadow: 0 10px 30px rgba(96,165,250,.18);
+    }
+    #next:hover{ filter: brightness(1.05); }
+    #next:active{ transform: translateY(1px); }
+
+    /* Small screens */
+    @media (max-width: 520px){
+      .header{ flex-direction: column; }
+      .stats{ justify-content:flex-start; }
+      .stat{ width: 100%; }
+      #next{ width: 100%; }
+      .actions{ justify-content:stretch; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="header">
+      <div class="brand">
+        <h1>Trivia <span class="pill">modo rápido</span></h1>
+        <p class="sub">Responde, suma puntos y avanza. ¡Vamos!</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Puntos</div>
+          <div class="value"><span id="score">0</span></div>
+        </div>
+
+        <div class="stat" style="min-width:190px;">
+          <div class="label">Progreso</div>
+          <div class="value">
+            <span id="idx">0</span><small>/</small><span id="total">0</span>
+          </div>
+          <div class="progressWrap" aria-hidden="true" style="margin-top:10px;">
+            <div class="progressBar" id="pbar"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="card" aria-live="polite">
+      <div class="meta">
+        <div class="chip">Categoría: <b id="cat">-</b></div>
+        <div class="chip">Dificultad: <b id="diff">-</b></div>
+        <div class="chip">Tipo: <b id="type">-</b></div>
+      </div>
+
+      <h2 id="q">Cargando…</h2>
+
+      <div id="answers"></div>
+
+      <div class="actions">
+        <button id="next">Siguiente →</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Esto solo actualiza la barra de progreso visual, sin romper tu app.js.
+    // Si tu app.js ya actualiza idx/total, esto se actualiza solo.
+    const pbar = document.getElementById('pbar');
+    const idxEl = document.getElementById('idx');
+    const totalEl = document.getElementById('total');
+
+    const updateProgress = () => {
+      const idx = Number(idxEl?.textContent || 0);
+      const total = Number(totalEl?.textContent || 0);
+      const pct = total > 0 ? Math.min(100, Math.max(0, (idx / total) * 100)) : 0;
+      if (pbar) pbar.style.width = pct + '%';
+    };
+
+    // Observa cambios en idx/total para refrescar la barra.
+    const obs = new MutationObserver(updateProgress);
+    if (idxEl) obs.observe(idxEl, { childList: true, subtree: true });
+    if (totalEl) obs.observe(totalEl, { childList: true, subtree: true });
+    updateProgress();
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>
