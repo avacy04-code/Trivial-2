@@ -1,42 +1,16 @@
 [
   {
-    "question": "¿Cuántos minutos de actividad física moderada se recomiendan al día para adultos?",
-    "category": "Salud",
-    "difficulty": "easy",
-    "type": "multiple",
-    "correct_answer": "Al menos 30 minutos",
-    "incorrect_answers": ["10 minutos", "5 minutos", "2 horas obligatorias"]
-  },
-  {
-    "question": "¿Cuál de los siguientes alimentos es más saludable como snack diario?",
-    "category": "Nutrición",
-    "difficulty": "easy",
-    "type": "multiple",
-    "correct_answer": "Fruta fresca",
-    "incorrect_answers": ["Patatas fritas", "Bollería industrial", "Refrescos azucarados"]
-  },
-  {
-    "question": "¿Cuántas horas de sueño se recomiendan para un adulto promedio?",
-    "category": "Descanso",
-    "difficulty": "medium",
-    "type": "multiple",
-    "correct_answer": "Entre 7 y 9 horas",
-    "incorrect_answers": ["4 horas", "5 horas", "12 horas obligatorias"]
-  },
-  {
-    "question": "¿Qué bebida es la más recomendable para mantener una buena hidratación diaria?",
-    "category": "Hidratación",
-    "difficulty": "easy",
-    "type": "multiple",
-    "correct_answer": "Agua",
-    "incorrect_answers": ["Refrescos", "Bebidas energéticas", "Bebidas alcohólicas"]
-  },
-  {
-    "question": "¿Qué hábito ayuda a reducir el estrés y mejorar la salud mental?",
-    "category": "Bienestar",
-    "difficulty": "medium",
-    "type": "multiple",
-    "correct_answer": "Practicar ejercicio o meditación regularmente",
-    "incorrect_answers": ["Dormir 3 horas al día", "Evitar salir de casa siempre", "Consumir más cafeína"]
+    "id": 1,
+    "categoria": "Alimentación",
+    "pregunta": "¿Cuál es la bebida más saludable para hidratarse a diario?",
+    "opciones": [
+      "Refrescos",
+      "Zumos envasados",
+      "Agua",
+      "Bebidas energéticas"
+    ],
+    "respuesta_correcta": 2,
+    "explicacion": "El agua es la mejor opción para hidratarse. No contiene azúcar ni aditivos y es esencial para el funcionamiento del cuerpo.",
+    "fuente": "OMS"
   }
 ]
